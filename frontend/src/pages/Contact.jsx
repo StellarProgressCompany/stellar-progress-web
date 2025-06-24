@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AnimatedText from '../components/AnimatedText.jsx';
 import ft10 from '../assets/10.jpeg';
+import { sendContactMessage } from '../services/contactService';
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -24,15 +25,24 @@ export default function Contact() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.from_name || !formData.email || !formData.message || !formData.privacy) {
             setStatusMessage('❌ Por favor, completa todos los campos y acepta la política de privacidad.');
             return;
         }
-        // Lógica de envío de formulario (emailjs u otro servicio)
-        setStatusMessage('✅ ¡Mensaje enviado con éxito!');
-        setFormData({ from_name: '', email: '', message: '', privacy: false });
+
+        try {
+            await sendContactMessage({
+                from_name: formData.from_name,
+                email: formData.email,
+                message: formData.message,
+            });
+            setStatusMessage('✅ ¡Mensaje enviado con éxito!');
+            setFormData({ from_name: '', email: '', message: '', privacy: false });
+        } catch (err) {
+            setStatusMessage('❌ Ocurrió un error al enviar el mensaje.');
+        }
     };
 
     return (

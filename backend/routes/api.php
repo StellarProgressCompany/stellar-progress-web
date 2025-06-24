@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/test', function () {
     return response()->json(['message' => 'Hello from Laravel Backend!']);
 });
+
+Route::post('/contact', [ContactController::class, 'send']);
