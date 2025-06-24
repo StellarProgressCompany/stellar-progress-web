@@ -3,10 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Controllers
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\TableTypeController;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,13 +26,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/test', function () {
     return response()->json(['message' => 'Hello from Laravel Backend!']);
 });
-
-Route::get('/table-availability', [TableTypeController::class, 'index']);
-
-
-// Bookings route
-Route::post('/bookings', [BookingController::class, 'store']);
-
-
-// routes/api.php
-Route::get('/bookings', [BookingController::class, 'index']);
