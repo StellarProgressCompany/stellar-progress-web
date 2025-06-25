@@ -45,11 +45,10 @@ storage/framework/views/*
 ###############################################################################
 #  Environment & Debug                                                        #
 ###############################################################################
-# local .env overrides, lock files, etc.
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# all .env files (local, production, staging, etc.)
+.env
+.env.*
+
 
 ###############################################################################
 #  OS / Editor                                                                #

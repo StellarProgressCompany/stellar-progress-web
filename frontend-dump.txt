@@ -1,0 +1,1549 @@
+=== Directory tree of frontend/src ===
+frontend/src
+frontend/src/App.css
+frontend/src/App.jsx
+frontend/src/components
+frontend/src/components/AnimatedText.jsx
+frontend/src/components/Animation.jsx
+frontend/src/components/BackgroundAnimation.jsx
+frontend/src/components/carrousel.jsx
+frontend/src/components/Footer.jsx
+frontend/src/components/Navbar.jsx
+frontend/src/index.css
+frontend/src/main.jsx
+frontend/src/pages
+frontend/src/pages/About.jsx
+frontend/src/pages/AvisoLegal.jsx
+frontend/src/pages/Contact.jsx
+frontend/src/pages/CookiePopup.jsx
+frontend/src/pages/Cookies.jsx
+frontend/src/pages/Home.jsx
+frontend/src/pages/Privacidad.jsx
+frontend/src/services
+frontend/src/services/contactService.js
+frontend/src/styles
+frontend/src/styles/index.css
+
+=== File contents ===
+
+------------------------------------------------------------
+File: frontend/src/App.css
+------------------------------------------------------------
+
+------------------------------------------------------------
+File: frontend/src/App.jsx
+------------------------------------------------------------
+// src/App.jsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Animation from './components/Animation';
+import CookiePopup from './pages/CookiePopup';
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import AvisoLegal from './pages/AvisoLegal';
+import Privacidad from './pages/Privacidad';
+import Cookies from './pages/Cookies';
+
+function App() {
+    return (
+        <>
+            {/* Pantalla de carga */}
+            <Animation />
+
+            <Router>
+                {/* Popup de cookies disponible en todas las rutas */}
+                <CookiePopup />
+
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/aviso-legal" element={<AvisoLegal />} />
+                    <Route path="/politica-de-privacidad" element={<Privacidad />} />
+                    <Route path="/cookies" element={<Cookies />} />
+                </Routes>
+            </Router>
+        </>
+    );
+}
+
+export default App;
+
+------------------------------------------------------------
+File: frontend/src/components/AnimatedText.jsx
+------------------------------------------------------------
+import React, { useEffect, useRef, useState } from 'react';
+
+export default function AnimatedText({ children, className = '' }) {
+    const ref = useRef(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setVisible(true);
+                    observer.unobserve(entry.target);
+                }
+            },
+            { threshold: 0.2 } // Ajusta el umbral según convenga
+        );
+        if (ref.current) observer.observe(ref.current);
+        return () => {
+            if (ref.current) observer.unobserve(ref.current);
+        };
+    }, []);
+
+    return (
+        <div ref={ref} className={`${className} ${visible ? 'animate-fadeInDown' : 'opacity-0'}`}>
+            {children}
+        </div>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/components/Animation.jsx
+------------------------------------------------------------
+// src/components/Animation.jsx
+import React, { useEffect, useState } from "react";
+import LogoImage from "../assets/logoviny.png"; // <- Importación activa del logo en imagen
+
+export default function Animation() {
+    const [progress, setProgress] = useState(0);
+    const [fadeOut, setFadeOut] = useState(false);
+    const [showAnimation, setShowAnimation] = useState(true);
+    const [titleScale, setTitleScale] = useState(0.95);
+    const [titleOpacity, setTitleOpacity] = useState(0);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setTitleOpacity(1);
+            setTitleScale(1);
+        }, 100);
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setProgress((prev) => {
+                if (prev < 100) {
+                    return prev + 1;
+                } else {
+                    clearInterval(interval);
+                    return prev;
+                }
+            });
+        }, 15);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        if (progress === 100) {
+            setFadeOut(true);
+            setTitleScale(1.1);
+            const timer = setTimeout(() => {
+                setShowAnimation(false);
+            }, 400);
+            return () => clearTimeout(timer);
+        }
+    }, [progress]);
+
+    if (!showAnimation) {
+        return null;
+    }
+
+    return (
+        <div
+            className={`fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center
+                bg-black z-50 transition-opacity duration-500
+                ${fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+        >
+            {/* Logo en texto (desactivado) */}
+            {/**/}
+            <h1
+                className="text-3xl sm:text-5xl font-medium font-lavish text-white py-10 text-center transition-transform duration-1000 ease-out"
+                style={{
+                    transform: `scale(${titleScale})`,
+                    opacity: titleOpacity,
+                    textShadow: "0 0 20px rgba(0, 0, 0, 0.8)"
+                }}
+            >
+                Restaurant la Masia
+            </h1>
+
+
+            {/* Logo en imagen (activo)
+            <img
+                src={LogoImage}
+                alt="Sommelier"
+                className="h-16 sm:h-24 md:h-32 lg:h-40 w-auto mb-10 transition-transform duration-1000 ease-out"
+                style={{
+                    transform: `scale(${titleScale})`,
+                    opacity: titleOpacity,
+                    filter: "drop-shadow(0 0 20px rgba(0,0,0,0.8))"
+                }}
+            />*/}
+
+            {/* Barra de carga de extremo a extremo */}
+            <div className="w-full h-0.5 bg-transparent overflow-hidden mt-6">
+                <div
+                    className="h-full bg-gray-100"
+                    style={{ width: `${progress}%`, transition: 'width 15ms linear' }}
+                />
+            </div>
+        </div>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/components/BackgroundAnimation.jsx
+------------------------------------------------------------
+// components/BackgroundAnimation.jsx
+import React, { useEffect, useState } from 'react';
+
+function BackgroundAnimation() {
+    const [stars, setStars] = useState([]);
+
+    useEffect(() => {
+        const numberOfStars = 50;
+        const newStars = [];
+        for (let i = 0; i < numberOfStars; i++) {
+            newStars.push({
+                id: i,
+                left: Math.random() * 100,
+                top: Math.random() * 100,
+                duration: 3 + Math.random() * 5,
+                delay: Math.random() * 5,
+                size: 1 + Math.random() * 2,
+            });
+        }
+        setStars(newStars);
+    }, []);
+
+    return (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {stars.map(star => (
+                <div
+                    key={star.id}
+                    className="absolute bg-white opacity-75 rounded-full animate-fall"
+                    style={{
+                        left: `${star.left}%`,
+                        top: `${star.top}%`,
+                        width: `${star.size}px`,
+                        height: `${star.size}px`,
+                        animationDuration: `${star.duration}s`,
+                        animationDelay: `${star.delay}s`,
+                    }}
+                />
+            ))}
+        </div>
+    );
+}
+
+export default BackgroundAnimation;
+
+------------------------------------------------------------
+File: frontend/src/components/Footer.jsx
+------------------------------------------------------------
+// src/components/Footer.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaInstagram } from "react-icons/fa";
+
+export default function Footer() {
+    return (
+        <footer className="relative bg-footer text-gray-300 pt-8">
+            {/* Separador de tres zonas */}
+            <svg
+                className="pointer-events-none absolute -top-24 left-0 w-full h-24"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 1200 120"
+                preserveAspectRatio="none"
+            >
+                <path
+                    d="M0,40 C350,0 350,0 1000,140 C750,110 1050,90 1200,35 V180 H0 Z"
+                    fill="rgba(145,82,75,1)"
+                />
+                <path
+                    d="M0,60 C150,20 350,20 600,60 C850,100 1050,100 1200,60 V120 H0 Z"
+                    fill="rgba(145,82,75,1)"
+                />
+            </svg>
+
+            {/* Contenido principal */}
+            <div className="container mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                {/* Columna 1 */}
+                <div className="space-y-2">
+                    <h2 className="text-2xl sm:text-3xl font-lavish font-medium text-gray-300">
+                        La Masia
+                    </h2>
+                    <p className="text-sm">
+                        Cocina clásica catalana.
+                    </p>
+                    <div className="flex items-center space-x-2">
+                        <FaInstagram className="text-gray-300 text-base" />
+                        <a
+                            href="https://instagram.com/restaurantmasia"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm hover:text-white"
+                        >
+                            @restaurantmasia
+                        </a>
+                    </div>
+                </div>
+
+                {/* Columna 2: Ubicación */}
+                <div className="space-y-2">
+                    <h3 className="text-xl sm:text-2xl font-playfair text-gray-300">
+                        Ubicación
+                    </h3>
+                    <p className="text-sm">Cami de la Pineda, 98</p>
+                    <p className="text-sm">Vacarisses, 08233 (Barcelona)</p>
+                    <p className="text-sm">Tel: +34 683 379 643</p>
+                    <p className="text-sm">Email: info@restaurantmasia.cat</p>
+                    <Link
+                        to="/"
+                        className="inline-block mt-1 text-sm underline hover:text-white"
+                    >
+                        Ver mapa
+                    </Link>
+                </div>
+
+                {/* Columna 3: Horario */}
+                <div className="space-y-2">
+                    <h3 className="text-xl sm:text-2xl font-playfair text-gray-300">
+                        Horario
+                    </h3>
+                    <p className="text-sm">
+                        <span className="font-medium">Lun–Vie:</span><br />13:00–16:00 &amp; 20:00–23:00
+                    </p>
+                    <p className="text-sm">
+                        <span className="font-medium">Sáb:</span><br />13:00–23:00
+                    </p>
+                    <p className="text-sm">
+                        <span className="font-medium">Dom:</span><br />13:00–17:00
+                    </p>
+                </div>
+
+                {/* Columna 4: Acciones */}
+                <div className="space-y-2">
+                    <h3 className="text-xl sm:text-2xl font-playfair text-gray-300">
+                        Contacto
+                    </h3>
+                    <Link
+                        to="/contact"
+                        className="block border border-gray-300 text-center py-2 text-sm uppercase hover:bg-gray-300 hover:text-dark-green transition"
+                    >
+                        Envía un mensaje
+                    </Link>
+                    <a
+                        href="mailto:info@restaurantmasia.cat"
+                        className="block border border-gray-300 text-center py-2 text-sm uppercase hover:bg-gray-300 hover:text-dark-green transition"
+                    >
+                        Email directo
+                    </a>
+                    <a
+                        href="tel:+34683379643"
+                        className="block border border-gray-300 text-center py-2 text-sm uppercase hover:bg-gray-300 hover:text-dark-green transition"
+                    >
+                        Llamar ahora
+                    </a>
+                </div>
+            </div>
+
+            {/* Pie legal a dos líneas, responsive */}
+            <div className="bg-footer text-sm text-center py-6">
+                <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0">
+                    <p className="text-light-gray">
+                        © 2025 La Masia. Todos los derechos reservados.
+                        <span className="ml-1">Developed by Stellar Progress</span>
+                    </p>
+                    <nav className="space-x-4">
+                        <Link to="/aviso-legal" className="hover:underline">
+                            Aviso Legal
+                        </Link>
+                        <Link to="/politica-de-privacidad" className="hover:underline">
+                            Política de Privacidad
+                        </Link>
+                        <Link to="/cookies" className="hover:underline">
+                            Política de Cookies
+                        </Link>
+                    </nav>
+                </div>
+            </div>
+        </footer>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/components/Navbar.jsx
+------------------------------------------------------------
+// src/components/Navbar.jsx
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import LogoImage from '../assets/logoviny.png'; // <- Import del logo en imagen
+import carta from '../assets/Carta.pdf';
+
+
+export default function Navbar() {
+    const [isOpen, setIsOpen]   = useState(false);
+    const [isAtTop, setIsAtTop] = useState(true);
+    const [showNav, setShowNav] = useState(true);
+    const lastScrollY           = useRef(0);
+    const location              = useLocation();
+    const isHome                = location.pathname === '/';
+
+    const toggleMenu = () => setIsOpen(!isOpen);
+    const closeMenu  = () => setIsOpen(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentY = window.scrollY;
+            setIsAtTop(currentY === 0);
+            setShowNav(currentY <= lastScrollY.current || currentY < 100);
+            lastScrollY.current = currentY;
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const activeClass = 'text-white';
+
+    return (
+        <motion.nav
+            initial={{ y: -120 }}
+            animate={{ y: showNav ? 0 : -120 }}
+            transition={{ duration: 0.3 }}
+            className={`fixed top-0 left-0 w-full z-40 transition-colors duration-300 ${
+                isHome && isAtTop ? 'bg-transparent' : 'bg-nav'
+            }`}
+        >
+            <div className="container mx-auto flex items-center justify-between h-20 px-6 md:px-8">
+                {isHome ? (
+                    <>
+                        {/* Logo a la izquierda */}
+                        <NavLink to="/" onClick={closeMenu}>
+                            <span className="text-2xl md:text-3xl font-medium text-gray-100 font-lavish">
+                                Restaurant La Masia
+                            </span>
+                            {/*
+                            <img
+                                src={LogoImage}
+                                alt="Sommelier Restaurant"
+                                className="h-10 w-auto"
+                            />*/}
+                        </NavLink>
+
+                        {/* Menú escritorio */}
+                        <div className="hidden md:flex space-x-8 font-thin">
+                            {[
+                                { to: '/',      label: 'Inicio' },
+                                { to: '/about', label: 'Nosotros' },
+                                { to: '/contact', label: 'Contacto' },
+                            ].map(({ to, label }) => (
+                                <NavLink
+                                    key={to}
+                                    to={to}
+                                    onClick={closeMenu}
+                                    className={({ isActive }) =>
+                                        `uppercase ${
+                                            isActive ? activeClass : 'text-gray-100'
+                                        } hover:text-dark-green`
+                                    }
+                                >
+                                    {label}
+                                </NavLink>
+                            ))}
+                            <a
+                                href={carta}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="uppercase text-gray-100 hover:text-dark-green"
+                            >
+                                La Carta
+                            </a>
+                            <button
+                                type="button"
+                                disabled
+                                className="uppercase text-gray-100 hover:text-dark-green "
+                            >
+                                Reservas
+                            </button>
+                        </div>
+
+                        {/* Hamburger móvil */}
+                        <button
+                            onClick={toggleMenu}
+                            className="md:hidden flex flex-col justify-between h-2 w-6"
+                        >
+                            {isOpen ? (
+                                <FaTimes size={24} className="text-white" />
+                            ) : (
+                                <>
+                                    <span className="block w-full h-px bg-white" />
+                                    <span className="block w-full h-px bg-white" />
+                                </>
+                            )}
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        {/* Hamburger izquierdo */}
+                        <button
+                            onClick={toggleMenu}
+                            className="flex flex-col justify-between h-2 w-6 text-white"
+                        >
+                            {isOpen ? (
+                                <FaTimes size={24} />
+                            ) : (
+                                <>
+                                    <span className="block w-full h-px bg-white" />
+                                    <span className="block w-full h-px bg-white" />
+                                </>
+                            )}
+                        </button>
+
+                        {/* Logo centrado */}
+                        <NavLink
+                            to="/"
+                            onClick={closeMenu}
+                            className="absolute left-1/2 transform -translate-x-1/2"
+                        >
+
+                            <span className="text-2xl font-medium text-gray-100 font-lavish">
+                                La Masia
+                            </span>
+                            {/*
+                            <img
+                                src={LogoImage}
+                                alt="Sommelier Restaurant"
+                                className="h-10 w-auto"
+                            />*/}
+                        </NavLink>
+                    </>
+                )}
+            </div>
+
+            {/* Menú desplegable móvil / no-Home */}
+            {isOpen && (
+                <div className="bg-neutral-900 bg-opacity-95 py-4">
+                    <ul className="container mx-auto px-6 md:px-8 space-y-6 font-thin">
+                        {[
+                            { to: '/',       label: 'Inicio' },
+                            { to: '/about',  label: 'Nosotros' },
+                            { to: '/contact',label: 'Contacto' },
+                        ].map(({ to, label }) => (
+                            <li key={to}>
+                                <NavLink
+                                    to={to}
+                                    onClick={closeMenu}
+                                    className={({ isActive }) =>
+                                        `block uppercase text-md ${
+                                            isActive ? activeClass : 'text-gray-300'
+                                        } hover:text-fondo`
+                                    }
+                                >
+                                    {label}
+                                </NavLink>
+                            </li>
+                        ))}
+                        <li>
+                            <a
+                                href={carta}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block uppercase text-md text-gray-300 hover:text-fondo"
+                            >
+                                La Carta
+                            </a>
+                        </li>
+                        <li>
+                            <button
+                                type="button"
+                                disabled
+                                className="block uppercase text-md text-gray-100 hover:text-fondo"
+                            >
+                                Reservas
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            )}
+        </motion.nav>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/components/carrousel.jsx
+------------------------------------------------------------
+// src/components/Carrousel.jsx
+import React from 'react';
+import { motion } from 'framer-motion';
+import ft7 from '../assets/7.jpeg';
+import carta from '../assets/Carta.pdf';
+
+
+export default function Carrousel() {
+    // Retrasos de animación
+    const titleDelay = 1.5;
+    const buttonDelay = 2.2;
+
+    // Props comunes para los botones
+    const btnHoverTap = {
+        whileHover: { scale: 1.05 },
+        whileTap:   { scale: 0.95 },
+        transition:{ type: 'spring', stiffness: 300 }
+    };
+
+    return (
+        <section
+            id="carrousel"
+            className="relative w-full z-20 h-screen overflow-hidden bg-black flex flex-col items-center justify-center px-4 sm:px-6 md:px-8"
+        >
+            {/* Imagen de fondo con zoom continuo */}
+            <motion.img
+                src={ft7}
+                alt="Slide único"
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ scale: 1 }}
+                animate={{ scale: 1.2 }}
+                transition={{
+                    duration: 10,
+                    ease: 'easeInOut',
+                    repeat: Infinity,
+                    repeatType: 'reverse'
+                }}
+            />
+
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 space-y-4 sm:space-y-6 md:space-y-8 text-center">
+                <motion.h1
+                    className="text-6xl lg:text-9xl font-medium text-white font-lavish drop-shadow-2xl"
+                    style={{ textShadow: '0 0 20px rgba(0,0,0,0.8)' }}
+                    initial={{ opacity: 0, y: -50, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 1, delay: titleDelay, ease: 'easeOut' }}
+                >
+                    La Masia
+                </motion.h1>
+
+                <motion.button
+                    className="
+            mt-4 sm:mt-6 md:mt-8
+            uppercase font-light
+            px-6 sm:px-8 md:px-10 lg:px-12
+            py-2 sm:py-3 md:py-4
+            text-white bg-nav bg-opacity-55 border border-white
+            hover:bg-white hover:text-black hover:bg-opacity-75 hover:border-black
+            transition-colors duration-300
+          "
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: buttonDelay }}
+                    {...btnHoverTap}
+                >
+                    Reservar Mesa
+                </motion.button>
+
+                <motion.a
+                    href={carta}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+    mt-2
+    uppercase font-light
+    px-6 sm:px-8 md:px-10 lg:px-12
+    py-2 sm:py-3 md:py-4
+    text-black bg-white bg-opacity-75 border border-black
+    hover:bg-nav hover:text-white hover:bg-opacity-55 hover:border-white
+    transition-colors duration-300
+  "
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: buttonDelay + 0.2 }}
+                    {...btnHoverTap}
+                >
+                    Ver Carta
+                </motion.a>
+            </div>
+        </section>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/index.css
+------------------------------------------------------------
+/* index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animación personalizada para que las estrellas suban en diagonal (45° hacia arriba e izquierda) */
+@keyframes fall {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-100vw, -100vh);
+        opacity: 0;
+    }
+}
+
+.animate-fall {
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+
+@keyframes zoomInOut {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animate-zoomInOut {
+    animation: zoomInOut 20s ease-in-out infinite;
+}
+
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInDown {
+    animation: fadeInDown 1s ease-out forwards;
+}
+
+
+------------------------------------------------------------
+File: frontend/src/main.jsx
+------------------------------------------------------------
+// main.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+import './App.css';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+------------------------------------------------------------
+File: frontend/src/pages/About.jsx
+------------------------------------------------------------
+// src/pages/About.jsx
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import AnimatedText from '../components/AnimatedText.jsx';
+
+import ft1 from '../assets/12.jpg';
+import ft2 from '../assets/team3.jpg';
+import ft3 from '../assets/14.jpg';
+import ft4 from '../assets/8.jpg';
+import carta from '../assets/Carta.pdf';
+
+export default function About() {
+    return (
+        <>
+            <Navbar />
+
+            {/* Hero con imagen oscurecida */}
+            <section className="relative w-full h-64 md:h-96 overflow-hidden">
+                <img
+                    src={ft1}
+                    alt="Restaurante La Masia"
+                    className="object-cover object-center w-full h-full"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                    {/* Aquí se podría incluir un título o slogan si se desea */}
+                </div>
+            </section>
+
+            {/* Contenido principal */}
+            <section className="bg-gray-100 py-16 px-6 md:px-12 space-y-20">
+
+                {/* Sección Gastronomía Catalana */}
+                <div className="max-w-4xl mx-auto text-center space-y-6">
+                    <AnimatedText>
+                        <p className="text-sm uppercase tracking-wider text-secund">
+                            La Masia
+                        </p>
+                    </AnimatedText>
+                    <AnimatedText>
+                        <h2 className="text-3xl md:text-4xl font-bold font-playfair text-gray-800">
+                            Gastronomía Catalana
+                        </h2>
+                    </AnimatedText>
+                    <AnimatedText>
+                        <p className="text-gray-700 leading-relaxed">
+                            En La Masia ofrecemos un auténtico viaje a los sabores de la cocina típica catalana, con menús que rondan los 30-40 € por persona. Nuestro recetario combina la tradición de hace décadas con toques de creatividad, utilizando siempre productos de temporada y procedencia local para garantizar la máxima calidad y frescura en cada bocado.
+                        </p>
+                    </AnimatedText>
+                    <AnimatedText>
+                        <a
+                            href={carta}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-4 inline-block px-6 py-2 border-2 border-secund text-secund font-medium hover:bg-secund hover:text-white transition-colors"
+                        >
+                            Ver Carta
+                        </a>
+                    </AnimatedText>
+
+                </div>
+
+                {/* Sección Nuestro Equipo */}
+                <div className="max-w-6xl mx-auto grid md:grid-cols-2 bg-white rounded-sm shadow-xl overflow-hidden">
+                    <div className="h-80 md:h-auto overflow-hidden">
+                        <img
+                            src={ft2}
+                            alt="Nuestro Equipo"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div className="p-8 flex flex-col justify-center space-y-4">
+                        <AnimatedText>
+                            <p className="text-sm uppercase tracking-wider text-secund">
+                                La Masia
+                            </p>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <h2 className="text-3xl md:text-4xl font-bold font-playfair text-gray-800">
+                                Nuestro Equipo
+                            </h2>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <p className="text-gray-700 leading-relaxed">
+                                En La Masia contamos con un equipo de chefs especializados, formados en las escuelas más prestigiosas de Cataluña, que combinan técnica y pasión para crear platos inolvidables. Además, nuestro personal de sala ofrece un servicio atento y cercano, siempre pendiente de cada detalle para que la experiencia de nuestros comensales sea excepcional.
+                            </p>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <NavLink
+                                to="/contact"
+                                className="mt-4 inline-block px-6 py-2 border-2 border-secund text-secund font-medium hover:bg-secund hover:text-white transition-colors"
+                            >
+                                Contáctanos
+                            </NavLink>
+                        </AnimatedText>
+                    </div>
+                </div>
+
+                {/* Sección Nuestra Historia */}
+                <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-12">
+                    <div className="p-8 space-y-4">
+                        <AnimatedText>
+                            <p className="text-sm uppercase tracking-wider text-secund">
+                                La Masia
+                            </p>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <h2 className="text-3xl md:text-4xl font-playfair font-bold text-gray-800">
+                                Nuestra Historia
+                            </h2>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <p className="text-gray-700 leading-relaxed">
+                                Fundada en 1953 por Maria y Josep, una pareja apasionada por la tradición catalana, La Masia nació como un pequeño restaurante familiar en el corazón de Barcelona. Con los años, hemos mantenido vivo el espíritu original: un lugar acogedor donde cada plato cuenta una historia de sabor y herencia. Hoy, tres generaciones después, seguimos fieles a nuestras raíces y al calor de hogar que define nuestra casa.
+                            </p>
+                        </AnimatedText>
+                    </div>
+                    <div className="h-80 md:h-auto overflow-hidden mb-4 rounded-sm shadow-lg">
+                        <img
+                            src={ft3}
+                            alt="Nuestra Historia"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                </div>
+
+                {/* Sección Nuestras Instalaciones */}
+                <div className="max-w-6xl mx-auto grid md:grid-cols-2 bg-white rounded-sm shadow-xl overflow-hidden">
+                    <div className="h-80 md:h-auto overflow-hidden">
+                        <img
+                            src={ft4}
+                            alt="Nuestras Instalaciones"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div className="p-8 flex flex-col justify-center space-y-4">
+                        <AnimatedText>
+                            <p className="text-sm uppercase tracking-wider text-secund">
+                                La Masia
+                            </p>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <h2 className="text-3xl md:text-4xl font-bold font-playfair text-gray-800">
+                                Nuestras Instalaciones
+                            </h2>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <p className="text-gray-700 leading-relaxed">
+                                Nuestro restaurante combina un ambiente rústico y elegante, con vigas de madera originales y una decoración que evoca las masías tradicionales de Cataluña. Disponemos de varias estancias íntimas y una terraza exterior ideal para disfrutar de comidas al aire libre en las tardes soleadas.
+                            </p>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <NavLink
+                                to="/contact"
+                                className="mt-4 inline-block px-6 py-2 border-2 border-secund text-secund font-medium hover:bg-secund hover:text-white transition-colors"
+                            >
+                                Visítanos
+                            </NavLink>
+                        </AnimatedText>
+                    </div>
+                </div>
+                <div className="h-80 md:h-auto overflow-hidden">
+
+                </div>
+
+            </section>
+
+            <Footer />
+        </>
+    );
+}
+------------------------------------------------------------
+File: frontend/src/pages/AvisoLegal.jsx
+------------------------------------------------------------
+import React from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
+export default function AvisoLegal() {
+    return (
+        <div className="bg-fondo text-light-gray min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-grow py-16 px-6">
+                <div className="max-w-4xl mx-auto bg-light-gray p-8 rounded-lg shadow-xl text-dark-green">
+                    <h1 className="text-3xl font-playfair text-secund text-center mb-4">
+                        Aviso Legal
+                    </h1>
+                    <p className="text-sm text-dark-green text-center mb-8">
+                        Última actualización: 09/02/2025
+                    </p>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            1. Información General
+                        </h2>
+                        <p>
+                            <strong>Titular:</strong> La Masia S.L.
+                        </p>
+                        <p>
+                            <strong>CIF:</strong> B12345678
+                        </p>
+                        <p>
+                            <strong>Domicilio:</strong> Cami de la Pineda, 98, 08233
+                            Vacarisses (Barcelona)
+                        </p>
+                        <p>
+                            <strong>Email:</strong> info@restaurantmasia.cat
+                        </p>
+                        <p>
+                            <strong>Finalidad:</strong> Presentación del restaurante y
+                            gestión de reservas.
+                        </p>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            2. Condiciones de Uso
+                        </h2>
+                        <p>
+                            El acceso y uso de este sitio web implica la aceptación de este
+                            Aviso Legal y de nuestra{" "}
+                            <a
+                                href="/politica-de-privacidad"
+                                className="text-secund hover:underline"
+                            >
+                                Política de Privacidad
+                            </a>
+                            .
+                        </p>
+                        <p className="mt-2">
+                            Queda prohibido utilizar la web con fines ilícitos o que puedan
+                            causar daño a terceros.
+                        </p>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            3. Propiedad Intelectual
+                        </h2>
+                        <p>
+                            Todos los contenidos (textos, imágenes, diseños) son propiedad de
+                            La Masia S.L. o disponen de licencia de uso.
+                        </p>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            4. Exclusión de Responsabilidad
+                        </h2>
+                        <p>
+                            La Masia no garantiza la disponibilidad continua de la web y no
+                            se responsabiliza de daños derivados de su uso.
+                        </p>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            5. Enlaces a terceros
+                        </h2>
+                        <p>
+                            La web puede contener enlaces a sitios externos. No nos
+                            responsabilizamos de su contenido ni funcionamiento.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            6. Legislación y Jurisdicción
+                        </h2>
+                        <p>
+                            Este Aviso Legal se rige por la legislación española y los
+                            tribunales de Barcelona serán competentes para resolver cualquier
+                            controversia.
+                        </p>
+                    </section>
+                </div>
+            </main>
+            <Footer />
+        </div>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/pages/Contact.jsx
+------------------------------------------------------------
+// frontend/src/pages/Contact.jsx
+import React, { useState } from 'react';
+import { NavLink, Link } from 'react-router-dom';
+import { FaPhone, FaEnvelope, FaSpinner } from 'react-icons/fa';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import AnimatedText from '../components/AnimatedText.jsx';
+import ft10 from '../assets/10.jpeg';
+import { sendContactMessage } from '../services/contactService';
+
+export default function Contact() {
+    const [formData, setFormData] = useState({
+        from_name: '',
+        email: '',
+        message: '',
+        privacy: false,
+    });
+    const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState({ message: '', type: '' }); // type: 'success' | 'error'
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // clear previous status
+        setStatus({ message: '', type: '' });
+
+        if (!formData.from_name || !formData.email || !formData.message || !formData.privacy) {
+            setStatus({
+                message: 'Por favor, completa todos los campos y acepta la política de privacidad.',
+                type: 'error'
+            });
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await sendContactMessage({
+                from_name: formData.from_name,
+                email: formData.email,
+                message: formData.message,
+            });
+            setStatus({
+                message: '¡Mensaje enviado con éxito!',
+                type: 'success'
+            });
+            setFormData({ from_name: '', email: '', message: '', privacy: false });
+        } catch (err) {
+            setStatus({
+                message: 'Ocurrió un error al enviar el mensaje.',
+                type: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <>
+            <Navbar />
+
+            <main className="mb-4">
+                {/* Sección 1: Visítanos + Mapa */}
+                {/* ...unchanged... */}
+            </main>
+
+            <section className="bg-fondo py-16 pb-24">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                    <AnimatedText>
+                        <div>
+                            <img
+                                src={ft10}
+                                alt="Restaurante La Masia"
+                                className="w-full rounded-lg mb-8 md:mb-32 pt-0 md:pt-8 shadow-lg"
+                            />
+                        </div>
+                    </AnimatedText>
+
+                    <div className="space-y-6">
+                        <AnimatedText>
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-playfair">
+                                CONTÁCTANOS
+                            </h2>
+                        </AnimatedText>
+                        <AnimatedText>
+                            <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
+                                ¡Queremos saber de ti! Rellena el formulario o escríbenos por correo
+                                electrónico o teléfono, y nuestro equipo se pondrá en contacto contigo
+                                lo antes posible.
+                            </p>
+                        </AnimatedText>
+
+                        <AnimatedText>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input
+                                        type="text"
+                                        name="from_name"
+                                        value={formData.from_name}
+                                        onChange={handleChange}
+                                        placeholder="Nombre"
+                                        disabled={loading}
+                                        className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-nav outline-none text-sm disabled:opacity-50"
+                                    />
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        placeholder="Email"
+                                        disabled={loading}
+                                        className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-nav outline-none text-sm disabled:opacity-50"
+                                    />
+                                </div>
+
+                                <textarea
+                                    name="message"
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    placeholder="Mensaje"
+                                    rows="5"
+                                    disabled={loading}
+                                    className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-nav outline-none text-sm disabled:opacity-50"
+                                />
+
+                                <label className="flex items-center space-x-2 text-gray-700 text-sm">
+                                    <input
+                                        type="checkbox"
+                                        name="privacy"
+                                        checked={formData.privacy}
+                                        onChange={handleChange}
+                                        disabled={loading}
+                                        className="form-checkbox h-5 w-5 text-nav disabled:opacity-50"
+                                    />
+                                    <span>
+                    He leído y acepto la{' '}
+                                        <Link to="/politica-de-privacidad" className="text-nav underline">
+                      Política de Privacidad
+                    </Link>
+                  </span>
+                                </label>
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full py-4 bg-secund text-white font-semibold uppercase hover:bg-nav transition-colors duration-300 text-sm disabled:opacity-50 flex items-center justify-center space-x-2"
+                                >
+                                    {loading ? (
+                                        <>
+                                            <FaSpinner className="animate-spin" />
+                                            <span>Enviando…</span>
+                                        </>
+                                    ) : (
+                                        'ENVIAR MENSAJE'
+                                    )}
+                                </button>
+
+                                {status.message && (
+                                    <p
+                                        className={`
+                      mt-4 text-center text-sm inline-block px-4 py-2 rounded-md 
+                      ${status.type === 'success'
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-red-100 text-red-800'}
+                      animate-fadeInDown
+                    `}
+                                    >
+                                        {status.message}
+                                    </p>
+                                )}
+                            </form>
+                        </AnimatedText>
+                    </div>
+                </div>
+            </section>
+
+            <Footer />
+        </>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/pages/CookiePopup.jsx
+------------------------------------------------------------
+import React, { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
+
+export default function CookiePopup() {
+    const [showPopup, setShowPopup] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        const accepted = localStorage.getItem("cookiesAccepted");
+        if (accepted || location.pathname === "/cookies") return;
+        const timer = setTimeout(() => setShowPopup(true), 3000);
+        return () => clearTimeout(timer);
+    }, [location.pathname]);
+
+    const handleAccept = () => {
+        localStorage.setItem("cookiesAccepted", "true");
+        setShowPopup(false);
+    };
+
+    if (!showPopup) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div className="bg-light-gray p-6 rounded-lg shadow-xl text-dark-green max-w-md w-full text-center">
+                <h2 className="text-2xl font-playfair text-secund mb-4">
+                    🍪 Uso de Cookies
+                </h2>
+                <p className="mb-4">
+                    Utilizamos cookies para mejorar tu experiencia. Lee nuestra{" "}
+                    <Link to="/cookies" className="text-secund hover:underline">
+                        Política de Cookies
+                    </Link>
+                    .
+                </p>
+                <button
+                    onClick={handleAccept}
+                    className="bg-nav text-light-gray font-semibold px-6 py-2 rounded-md hover:bg-secund transition"
+                >
+                    Aceptar Cookies
+                </button>
+            </div>
+        </div>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/pages/Cookies.jsx
+------------------------------------------------------------
+import React from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
+export default function Cookies() {
+    return (
+        <div className="bg-fondo text-light-gray min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-grow py-16 px-6">
+                <div className="max-w-4xl mx-auto bg-light-gray p-8 rounded-lg shadow-xl text-dark-green">
+                    <h1 className="text-3xl font-playfair text-secund text-center mb-4">
+                        Política de Cookies
+                    </h1>
+                    <p className="text-sm text-dark-green text-center mb-8">
+                        Última actualización: 09/02/2025
+                    </p>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            1. ¿Qué son las cookies?
+                        </h2>
+                        <p>
+                            Pequeños archivos que se almacenan en tu dispositivo para mejorar
+                            la experiencia y recordar preferencias.
+                        </p>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            2. Tipos de cookies
+                        </h2>
+                        <ul className="list-disc list-inside">
+                            <li>
+                                <strong>Técnicas:</strong> Necesarias para el funcionamiento.
+                            </li>
+                            <li>
+                                <strong>Analíticas:</strong> Para entender cómo usas la web.
+                            </li>
+                            <li>
+                                <strong>Publicidad:</strong> Para mostrarte anuncios
+                                personalizados.
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            3. Gestión de cookies
+                        </h2>
+                        <p>
+                            Puedes bloquear o eliminar cookies desde la configuración de tu
+                            navegador. En nuestro aviso solo ofrecemos “Aceptar todas”.
+                        </p>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            4. Duración
+                        </h2>
+                        <ul className="list-disc list-inside">
+                            <li>
+                                <strong>Sesión:</strong> Se eliminan al cerrar la ventana.
+                            </li>
+                            <li>
+                                <strong>Persistentes:</strong> Entre 30 días y 1 año.
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            5. Contacto
+                        </h2>
+                        <p>
+                            Dudas sobre esta política: info@restaurantmasia.cat
+                        </p>
+                    </section>
+                </div>
+            </main>
+            <Footer />
+        </div>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/pages/Home.jsx
+------------------------------------------------------------
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import Navbar from '../components/Navbar';
+import BackgroundAnimation from '../components/BackgroundAnimation';
+import Carrousel from '../components/carrousel';
+import Footer from '../components/Footer';
+
+function Home() {
+    return (
+        <>
+            <Helmet>
+                <title>La Masia Vacarisses | Restaurante de Cocina Tradicional Catalana</title>
+                <meta
+                    name="description"
+                    content="La Masia en Vacarisses: restaurante de cocina tradicional catalana. Platos caseros con ingredientes locales y ambiente acogedor."
+                />
+                <meta
+                    name="keywords"
+                    content="La Masia, restaurante, Vacarisses, cocina tradicional catalana, gastronomía catalana"
+                />
+                <meta property="og:title" content="La Masia Vacarisses | Restaurante de Cocina Tradicional Catalana" />
+                <meta property="og:description" content="Visita La Masia en Vacarisses, cocina tradicional catalana con platos caseros y auténticos sabores." />
+                <meta property="og:image" content="https://restaurantmasia.cat/og-image.jpg" />
+                <meta property="og:url" content="https://restaurantmasia.cat/" />
+                <meta property="og:type" content="restaurant" />
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="La Masia Vacarisses | Restaurante de Cocina Tradicional Catalana" />
+                <meta name="twitter:description" content="Restaurante de cocina tradicional catalana en Vacarisses con platos caseros e ingredientes locales." />
+                <meta name="twitter:image" content="https://restaurantmasia.cat/og-image.jpg" />
+
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Restaurant",
+                        "name": "La Masia",
+                        "url": "https://restaurantmasia.cat/",
+                        "logo": "https://restaurantmasia.cat/logo.png",
+                        "description": "Restaurante de cocina tradicional catalana en Vacarisses, con platos caseros elaborados con ingredientes locales.",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "addressLocality": "Vacarisses",
+                            "addressRegion": "Barcelona",
+                            "addressCountry": "ES"
+                        },
+                        "telephone": "+34 650 341 022",
+                        "servesCuisine": "Cocina tradicional catalana",
+                        "image": "https://restaurantmasia.cat/og-image.jpg"
+                    })}
+                </script>
+            </Helmet>
+
+            <div className="relative bg-gray-900 text-white font-plus">
+                <BackgroundAnimation />
+                <Navbar />
+                <main className="pt-0">
+                    <Carrousel />
+                </main>
+                <Footer />
+            </div>
+        </>
+    );
+}
+
+export default Home;
+
+------------------------------------------------------------
+File: frontend/src/pages/Privacidad.jsx
+------------------------------------------------------------
+import React from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
+export default function Privacidad() {
+    return (
+        <div className="bg-fondo text-light-gray min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-grow py-16 px-6">
+                <div className="max-w-4xl mx-auto bg-light-gray p-8 rounded-lg shadow-xl text-dark-green">
+                    <h1 className="text-3xl font-playfair text-secund text-center mb-4">
+                        Política de Privacidad
+                    </h1>
+                    <p className="text-sm text-dark-green text-center mb-8">
+                        Última actualización: 09/02/2025
+                    </p>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            1. Responsable del Tratamiento
+                        </h2>
+                        <p>
+                            <strong>Titular:</strong> La Masia S.L.
+                        </p>
+                        <p>
+                            <strong>CIF:</strong> B12345678
+                        </p>
+                        <p>
+                            <strong>Domicilio:</strong> Cami de la Pineda, 98, 08233
+                            Vacarisses (Barcelona)
+                        </p>
+                        <p>
+                            <strong>Email:</strong> info@restaurantmasia.cat
+                        </p>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            2. Datos Recopilados
+                        </h2>
+                        <ul className="list-disc list-inside">
+                            <li>
+                                <strong>Contacto:</strong> Nombre, email, mensaje.
+                            </li>
+                            <li>
+                                <strong>Cookies:</strong> Para mejorar tu experiencia.
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            3. Finalidad
+                        </h2>
+                        <p>Gestionar consultas y comunicaciones vía formulario.</p>
+                    </section>
+
+                    <section className="mb-6">
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            4. Derechos
+                        </h2>
+                        <ul className="list-disc list-inside">
+                            <li>Acceder, rectificar o suprimir tus datos.</li>
+                            <li>Oponerte o limitar su tratamiento.</li>
+                        </ul>
+                        <p className="mt-2">
+                            Escríbenos a{" "}
+                            <a
+                                href="mailto:info@restaurantmasia.cat"
+                                className="text-secund hover:underline"
+                            >
+                                info@restaurantmasia.cat
+                            </a>
+                            .
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-semibold text-nav mb-2">
+                            5. Conservación
+                        </h2>
+                        <p>
+                            Tus datos se guardan durante 4 años o hasta que solicites su
+                            eliminación.
+                        </p>
+                    </section>
+                </div>
+            </main>
+            <Footer />
+        </div>
+    );
+}
+
+------------------------------------------------------------
+File: frontend/src/services/contactService.js
+------------------------------------------------------------
+// frontend/src/services/contactService.js
+import axios from 'axios';
+
+// Point to your local Laravel API in development:
+const API_URL = 'http://localhost:8000/api';
+// — or, when you deploy, uncomment the next line and comment out the one above:
+// const API_URL = 'https://api.restaurantmasia.cat/api';
+
+export async function sendContactMessage(data) {
+    // Axios will POST JSON to your Laravel route at /api/contact
+    const response = await axios.post(
+        `${API_URL}/contact`,
+        data,
+        { headers: { 'Content-Type': 'application/json' } }
+    );
+    return response.data;
+}
+
+------------------------------------------------------------
+File: frontend/src/styles/index.css
+------------------------------------------------------------
+
