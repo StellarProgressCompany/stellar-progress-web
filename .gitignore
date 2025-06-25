@@ -1,33 +1,67 @@
 ###############################################################################
-#  Node / JS                                                                 #
+#  Node / JS  (incl. Vite / React)                                            #
 ###############################################################################
-# All third-party dependencies – they’re huge and reproduced on every build
+# dependencies
 node_modules/
 
-# Vite / React build output
-dist/              # vite build
-build/             # if you ever use CRA
+# build output
+dist/
+build/
 
-# Optional cache directories
+# optional cache directories
 .cache/
 .eslintcache
-*.tsbuildinfo      # TypeScript incremental build
+*.tsbuildinfo    # TypeScript incremental build
+
+# logs
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+# coverage reports
+coverage/
+
+###############################################################################
+#  Laravel / PHP                                                              #
+###############################################################################
+# Composer dependencies
+vendor/
+
+# Laravel storage & compiled files (we keep the folder structure, but not its dumps)
+public/storage
+storage/*.key
+storage/debugbar/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/testing/*
+storage/framework/views/*
+
+# Environment files
+.env
+.env.*.local
+
+# PHPUnit cache
+.phpunit.result.cache
 
 ###############################################################################
 #  Environment & Debug                                                        #
 ###############################################################################
+# local .env overrides, lock files, etc.
 .env.local
-.env.*.local
-npm-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+.env.development.local
+.env.test.local
+.env.production.local
 
 ###############################################################################
 #  OS / Editor                                                                #
 ###############################################################################
 .DS_Store
 Thumbs.db
+
+# IDEs
 .idea/
 .vscode/
-.fleet/
+*.sublime-workspace
+*.sublime-project
+
+# swap / temp
 *.swp
