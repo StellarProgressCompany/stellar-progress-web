@@ -1,2 +1,12 @@
-<p>Has recibido un nuevo mensaje de {{ $data['from_name'] }} ({{ $data['email'] }}):</p>
-<p>{{ $data['message'] }}</p>
+@component('mail::message')
+# Nuevo mensaje desde el formulario de contacto
+
+**Nombre:** {{ $data['from_name'] }}
+
+**Email:** {{ $data['email'] }}
+
+**Mensaje:**
+
+{{ $data['message'] }}
+
+@endcomponent

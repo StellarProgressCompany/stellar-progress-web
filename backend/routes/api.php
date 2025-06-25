@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,4 +29,4 @@ Route::get('/test', function () {
     return response()->json(['message' => 'Hello from Laravel Backend!']);
 });
 
-Route::post('/contact', [ContactController::class, 'send']);
+Route::post('/contact', [ContactController::class, 'submit']);
