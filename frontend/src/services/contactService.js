@@ -7,3 +7,4 @@ export const sendContactMessage = (data) =>
     axios.post(`${API_URL}/contact`, data, {
         headers: { 'Content-Type': 'application/json' },
     }).then(r => r.data);
+
