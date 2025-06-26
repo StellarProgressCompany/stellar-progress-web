@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = import.meta.env.VITE_API_URL;   // https://api.restaurantmasia.cat
+const API = import.meta.env.VITE_API_URL;
 
 export const sendContactMessage = (data) =>
     axios.post(`${API}/api/contact`, data, {
