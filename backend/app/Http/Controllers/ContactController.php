@@ -20,8 +20,7 @@ class ContactController extends Controller
             'message'   => 'required|string|max:5000',
         ]);
 
-        // Destination can be set in .env → CONTACT_FORM_TO
-        $recipient = config('mail.contact_form_to', env('MAIL_FROM_ADDRESS'));
+        $recipient = config('mail.contact_form_to');   // no env() fallback
 
         Mail::to($recipient)->send(new ContactFormSubmitted($data));
 
