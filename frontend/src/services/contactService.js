@@ -1,10 +1,8 @@
-// frontend/src/services/contactService.js
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API = import.meta.env.VITE_API_URL;   // https://api.restaurantmasia.cat
 
 export const sendContactMessage = (data) =>
-    axios.post(`${API_URL}/contact`, data, {
+    axios.post(`${API}/api/contact`, data, {
         headers: { 'Content-Type': 'application/json' },
     }).then(r => r.data);
-
