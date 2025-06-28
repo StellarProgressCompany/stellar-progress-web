@@ -1,12 +1,15 @@
 @component('mail::message')
-# Nuevo mensaje desde el formulario de contacto
+    # 🚀 Nuevo mensaje desde tu web
 
-**Nombre:** {{ $data['from_name'] }}
+    @component('mail::panel')
+        **Nombre:** {{ $data['from_name'] }}
+        **Email:** <{{ $data['email'] }}>
 
-**Email:** {{ $data['email'] }}
+        **Mensaje:**
+        {{ $data['message'] }}
+    @endcomponent
 
-**Mensaje:**
-
-{{ $data['message'] }}
-
+    @component('mail::subcopy')
+        Este correo se generó automáticamente desde el formulario de contacto de [stellarprogress.es](https://stellarprogress.es)
+    @endcomponent
 @endcomponent
