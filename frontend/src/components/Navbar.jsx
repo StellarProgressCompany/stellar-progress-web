@@ -1,196 +1,177 @@
-// src/components/Navbar.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { FaTimes } from 'react-icons/fa';
-import { motion } from 'framer-motion';
-import LogoImage from '../assets/logoviny.png'; // <- Import del logo en imagen
-import carta from '../assets/Carta.pdf';
+// components/Navbar.jsx
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-scroll";
+import { NavLink, useLocation } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { motion, useAnimation } from "framer-motion";
+import logo from "../assets/LOGO/LOGO-STELLAR-PNG-BLANC.png";
 
+function Navbar() {
+    const [isOpen, setIsOpen] = useState(false);
+    const location = useLocation();
+    const isHome = location.pathname === "/";
 
-export default function Navbar() {
-    const [isOpen, setIsOpen]   = useState(false);
-    const [isAtTop, setIsAtTop] = useState(true);
-    const [showNav, setShowNav] = useState(true);
-    const lastScrollY           = useRef(0);
-    const location              = useLocation();
-    const isHome                = location.pathname === '/';
+    /* ---------------- Animaciones ---------------- */
+    const controls = useAnimation();
+    const variants = {
+        show: { y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+        hide: { y: "-100%", transition: { duration: 0.3, ease: "easeIn" } },
+    };
 
-    const toggleMenu = () => setIsOpen(!isOpen);
-    const closeMenu  = () => setIsOpen(false);
+    /* ---------------- Scroll handler optimizado ---------------- */
+    const lastScrollY = useRef(0);
+    const ticking = useRef(false);
+    const SCROLL_DELTA = 12; // px mínimos antes de decidir
 
     useEffect(() => {
-        const handleScroll = () => {
+        // animación inicial tras hero (delay 1.9 s)
+        controls.set({ opacity: 0, y: -50 });
+        controls.start({ opacity: 1, y: 0, transition: { duration: 1, delay: 1.9 } });
+    }, [controls]);
+
+    useEffect(() => {
+        const update = () => {
+            ticking.current = false;
             const currentY = window.scrollY;
-            setIsAtTop(currentY === 0);
-            setShowNav(currentY <= lastScrollY.current || currentY < 100);
+
+            /* Mantener visible si menú móvil está abierto */
+            if (isOpen) {
+                controls.start("show");
+                lastScrollY.current = currentY;
+                return;
+            }
+
+            /* Determinar si cambiamos de estado */
+            const diff = currentY - lastScrollY.current;
+            if (Math.abs(diff) < SCROLL_DELTA) return; // movimiento muy pequeño
+
+            if (currentY <= 0 || diff < 0) {
+                // Arriba del todo o desplazándose hacia arriba
+                controls.start("show");
+            } else {
+                // Scroll hacia abajo
+                controls.start("hide");
+            }
             lastScrollY.current = currentY;
         };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
-    const activeClass = 'text-white';
+        const handleScroll = () => {
+            if (!ticking.current) {
+                window.requestAnimationFrame(update);
+                ticking.current = true;
+            }
+        };
 
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [controls, isOpen]);
+
+    /* ---------------- Menú móvil ---------------- */
+    const toggleMenu = () => setIsOpen(!isOpen);
+    const closeMenu = () => setIsOpen(false);
+
+    /* ---------------- Render ---------------- */
     return (
         <motion.nav
-            initial={{ y: -120 }}
-            animate={{ y: showNav ? 0 : -120 }}
-            transition={{ duration: 0.3 }}
-            className={`fixed top-0 left-0 w-full z-40 transition-colors duration-300 ${
-                isHome && isAtTop ? 'bg-transparent' : 'bg-nav'
-            }`}
+            variants={variants}
+            initial="show"
+            animate={controls}
+            className="fixed top-0 left-0 w-full z-50 bg-gray-800 bg-opacity-95 shadow-lg will-change-transform"
         >
-            <div className="container mx-auto flex items-center justify-between h-20 px-6 md:px-8">
-                {isHome ? (
-                    <>
-                        {/* Logo a la izquierda */}
-                        <NavLink to="/" onClick={closeMenu}>
-                            <span className="text-2xl md:text-3xl font-medium text-gray-100 font-lavish">
-                                Restaurant La Masia
-                            </span>
-                            {/*
-                            <img
-                                src={LogoImage}
-                                alt="Sommelier Restaurant"
-                                className="h-10 w-auto"
-                            />*/}
-                        </NavLink>
+            <div className="container mx-auto flex justify-between items-center px-6 py-4">
+                {/* Logo */}
+                <NavLink to="/">
+                    <img src={logo} alt="Stellar Progress Logo" className="h-12 w-auto cursor-pointer" />
+                </NavLink>
 
-                        {/* Menú escritorio */}
-                        <div className="hidden md:flex space-x-8 font-thin">
-                            {[
-                                { to: '/',      label: 'Inicio' },
-                                { to: '/about', label: 'Nosotros' },
-                                { to: '/contact', label: 'Contacto' },
-                            ].map(({ to, label }) => (
-                                <NavLink
-                                    key={to}
-                                    to={to}
-                                    onClick={closeMenu}
-                                    className={({ isActive }) =>
-                                        `uppercase ${
-                                            isActive ? activeClass : 'text-gray-100'
-                                        } hover:text-dark-green`
-                                    }
-                                >
-                                    {label}
-                                </NavLink>
-                            ))}
-                            <a
-                                href={carta}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="uppercase text-gray-100 hover:text-dark-green"
-                            >
-                                La Carta
-                            </a>
-                            <button
-                                type="button"
-                                disabled
-                                className="uppercase text-gray-100 hover:text-dark-green "
-                            >
-                                Reservas
-                            </button>
-                        </div>
-
-                        {/* Hamburger móvil */}
-                        <button
-                            onClick={toggleMenu}
-                            className="md:hidden flex flex-col justify-between h-2 w-6"
-                        >
-                            {isOpen ? (
-                                <FaTimes size={24} className="text-white" />
-                            ) : (
-                                <>
-                                    <span className="block w-full h-px bg-white" />
-                                    <span className="block w-full h-px bg-white" />
-                                </>
-                            )}
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        {/* Hamburger izquierdo */}
-                        <button
-                            onClick={toggleMenu}
-                            className="flex flex-col justify-between h-2 w-6 text-white"
-                        >
-                            {isOpen ? (
-                                <FaTimes size={24} />
-                            ) : (
-                                <>
-                                    <span className="block w-full h-px bg-white" />
-                                    <span className="block w-full h-px bg-white" />
-                                </>
-                            )}
-                        </button>
-
-                        {/* Logo centrado */}
-                        <NavLink
-                            to="/"
-                            onClick={closeMenu}
-                            className="absolute left-1/2 transform -translate-x-1/2"
-                        >
-
-                            <span className="text-2xl font-medium text-gray-100 font-lavish">
-                                La Masia
-                            </span>
-                            {/*
-                            <img
-                                src={LogoImage}
-                                alt="Sommelier Restaurant"
-                                className="h-10 w-auto"
-                            />*/}
-                        </NavLink>
-                    </>
-                )}
-            </div>
-
-            {/* Menú desplegable móvil / no-Home */}
-            {isOpen && (
-                <div className="bg-neutral-900 bg-opacity-95 py-4">
-                    <ul className="container mx-auto px-6 md:px-8 space-y-6 font-thin">
+                {/* Enlaces desktop */}
+                <div className="hidden md:flex">
+                    <ul className="flex space-x-6 font-thin text-white">
                         {[
-                            { to: '/',       label: 'Inicio' },
-                            { to: '/about',  label: 'Nosotros' },
-                            { to: '/contact',label: 'Contacto' },
-                        ].map(({ to, label }) => (
-                            <li key={to}>
-                                <NavLink
-                                    to={to}
-                                    onClick={closeMenu}
-                                    className={({ isActive }) =>
-                                        `block uppercase text-md ${
-                                            isActive ? activeClass : 'text-gray-300'
-                                        } hover:text-fondo`
-                                    }
-                                >
-                                    {label}
-                                </NavLink>
+                            { id: "hero", label: "Inicio" },
+                            { id: "services", label: "Servicios" },
+                            { id: "about", label: "Quiénes somos" },
+                            { id: "contact", label: "Contacto" },
+                        ].map((item) => (
+                            <li key={item.id}>
+                                {isHome ? (
+                                    <Link
+                                        to={item.id}
+                                        smooth
+                                        duration={500}
+                                        offset={-80}
+                                        onClick={closeMenu}
+                                        className="cursor-pointer hover:text-yellow-500 transition-colors"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                ) : (
+                                    <NavLink
+                                        to="/"
+                                        onClick={closeMenu}
+                                        className="cursor-pointer hover:text-yellow-500 transition-colors"
+                                    >
+                                        {item.label}
+                                    </NavLink>
+                                )}
                             </li>
                         ))}
-                        <li>
-                            <a
-                                href={carta}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="block uppercase text-md text-gray-300 hover:text-fondo"
-                            >
-                                La Carta
-                            </a>
-                        </li>
-                        <li>
-                            <button
-                                type="button"
-                                disabled
-                                className="block uppercase text-md text-gray-100 hover:text-fondo"
-                            >
-                                Reservas
-                            </button>
-                        </li>
+                    </ul>
+                </div>
+
+                {/* Botón hamburguesa */}
+                <div className="md:hidden">
+                    <button onClick={toggleMenu} className="text-2xl text-white">
+                        {isOpen ? <FaTimes /> : <FaBars />}
+                    </button>
+                </div>
+            </div>
+
+            {/* Menú móvil desplegable */}
+            {isOpen && (
+                <div className="md:hidden bg-gray-900 bg-opacity-90">
+                    <ul className="flex flex-col space-y-4 font-thin p-4 text-white">
+                        {["hero", "services", "about", "contact"].map((id) => (
+                            <li key={id}>
+                                {isHome ? (
+                                    <Link
+                                        to={id}
+                                        smooth
+                                        duration={500}
+                                        offset={-80}
+                                        onClick={closeMenu}
+                                        className="cursor-pointer hover:text-yellow-500 transition-colors"
+                                    >
+                                        {id === "hero"
+                                            ? "Inicio"
+                                            : id === "services"
+                                                ? "Servicios"
+                                                : id === "about"
+                                                    ? "Quiénes somos"
+                                                    : "Contacto"}
+                                    </Link>
+                                ) : (
+                                    <NavLink
+                                        to="/"
+                                        onClick={closeMenu}
+                                        className="cursor-pointer hover:text-yellow-500 transition-colors"
+                                    >
+                                        {id === "hero"
+                                            ? "Inicio"
+                                            : id === "services"
+                                                ? "Servicios"
+                                                : id === "about"
+                                                    ? "Quiénes somos"
+                                                    : "Contacto"}
+                                    </NavLink>
+                                )}
+                            </li>
+                        ))}
                     </ul>
                 </div>
             )}
         </motion.nav>
     );
 }
+
+export default Navbar;

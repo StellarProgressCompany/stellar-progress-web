@@ -1,11 +1,5 @@
 User-agent: *
 Disallow: /
-Allow: /$
-Allow: /about$
-Allow: /contact$
-Allow: /aviso-legal$
-Allow: /politica-de-privacidad$
-Allow: /cookies$
+Allow: /
 
-# Indica la ubicación de tu sitemap
-Sitemap: https://restaurantmasia.cat/sitemap.xml
+Sitemap: https://stellarprogress.es/sitemap.xml

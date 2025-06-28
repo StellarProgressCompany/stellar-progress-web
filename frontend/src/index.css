@@ -20,37 +20,3 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
-
-
-@keyframes zoomInOut {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.animate-zoomInOut {
-    animation: zoomInOut 20s ease-in-out infinite;
-}
-
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fadeInDown {
-    animation: fadeInDown 1s ease-out forwards;
-}
-

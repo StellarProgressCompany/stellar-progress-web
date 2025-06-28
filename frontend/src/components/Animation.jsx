@@ -1,22 +1,28 @@
-// src/components/Animation.jsx
 import React, { useEffect, useState } from "react";
-import LogoImage from "../assets/logoviny.png"; // <- Importación activa del logo en imagen
+import logo from "../assets/LOGO/LOGO-STELLAR-LLETRES-PNG-BLANC.png";
 
 export default function Animation() {
+    // Progreso de la barra (0 a 100)
     const [progress, setProgress] = useState(0);
+    // Estado para el fade out del overlay
     const [fadeOut, setFadeOut] = useState(false);
+    // Controla si se muestra o no la pantalla de carga
     const [showAnimation, setShowAnimation] = useState(true);
-    const [titleScale, setTitleScale] = useState(0.95);
-    const [titleOpacity, setTitleOpacity] = useState(0);
+    // Escala del logo para efectos de zoom
+    const [logoScale, setLogoScale] = useState(0.95);
+    // Opacidad del logo para efecto fade in
+    const [logoOpacity, setLogoOpacity] = useState(0);
 
+    // Efecto para iniciar el fade in y zoom del logo
     useEffect(() => {
         const timer = setTimeout(() => {
-            setTitleOpacity(1);
-            setTitleScale(1);
+            setLogoOpacity(1); // Inicia el fade in
+            setLogoScale(1);   // Realiza un zoom de 0.95 a 1
         }, 100);
         return () => clearTimeout(timer);
     }, []);
 
+    // Incrementa el progreso de la barra de carga
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress((prev) => {
@@ -27,21 +33,23 @@ export default function Animation() {
                     return prev;
                 }
             });
-        }, 15);
+        }, 15); // Aproximadamente 1.5 seg para llegar a 100
         return () => clearInterval(interval);
     }, []);
 
+    // Cuando la barra llega al 100%, iniciamos el fade out y un pequeño efecto en el logo
     useEffect(() => {
         if (progress === 100) {
             setFadeOut(true);
-            setTitleScale(1.1);
+            setLogoScale(1.1);
             const timer = setTimeout(() => {
                 setShowAnimation(false);
-            }, 400);
+            }, 400); // 400ms para el fade out final
             return () => clearTimeout(timer);
         }
     }, [progress]);
 
+    // Si showAnimation es false, el componente no se renderiza
     if (!showAnimation) {
         return null;
     }
@@ -49,40 +57,22 @@ export default function Animation() {
     return (
         <div
             className={`fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center
-                bg-black z-50 transition-opacity duration-500
+                bg-black/90 z-50 transition-opacity duration-500
                 ${fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"}`}
         >
-            {/* Logo en texto (desactivado) */}
-            {/**/}
-            <h1
-                className="text-3xl sm:text-5xl font-medium font-lavish text-white py-10 text-center transition-transform duration-1000 ease-out"
-                style={{
-                    transform: `scale(${titleScale})`,
-                    opacity: titleOpacity,
-                    textShadow: "0 0 20px rgba(0, 0, 0, 0.8)"
-                }}
-            >
-                Restaurant la Masia
-            </h1>
-
-
-            {/* Logo en imagen (activo)
+            {/* Logo con efecto fade in y zoom; usa w-48 en móviles y w-72 en pantallas mayores */}
             <img
-                src={LogoImage}
-                alt="Sommelier"
-                className="h-16 sm:h-24 md:h-32 lg:h-40 w-auto mb-10 transition-transform duration-1000 ease-out"
-                style={{
-                    transform: `scale(${titleScale})`,
-                    opacity: titleOpacity,
-                    filter: "drop-shadow(0 0 20px rgba(0,0,0,0.8))"
-                }}
-            />*/}
+                src={logo}
+                alt="LOGO"
+                className="w-48 sm:w-72 h-auto mb-4 transform transition-all duration-500 ease-out"
+                style={{ transform: `scale(${logoScale})`, opacity: logoOpacity }}
+            />
 
-            {/* Barra de carga de extremo a extremo */}
-            <div className="w-full h-0.5 bg-transparent overflow-hidden mt-6">
+            {/* Barra de carga */}
+            <div className="w-full h-0.5 bg-gray-700 overflow-hidden">
                 <div
                     className="h-full bg-gray-100"
-                    style={{ width: `${progress}%`, transition: 'width 15ms linear' }}
+                    style={{ width: `${progress}%` }}
                 />
             </div>
         </div>

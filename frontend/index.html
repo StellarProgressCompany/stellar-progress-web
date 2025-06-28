@@ -2,48 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- FUENTES -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Merriweather:opsz,wght@18..144,500&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap');
-  </style>
-
-  <title>La Masia Vacarisses | Restaurante de Cocina Tradicional Catalana</title>
+  <title>Digitalización y Automatización para Comercios y Restaurantes | Stellar Progress Booking System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Meta Description -->
-  <meta name="description" content="La Masia en Vacarisses: restaurante de cocina tradicional catalana. Disfruta de platos caseros elaborados con ingredientes locales y auténticos sabores de Cataluña." />
+  <meta name="description" content="Soluciones integrales de digitalización, automatización y optimización para restaurantes. Diseñamos páginas web a medida, sistemas de reservas y gestión, optimizados para dispositivos móviles, mejorando la experiencia del cliente." />
 
   <!-- Meta Keywords -->
-  <meta name="keywords" content="La Masia, restaurante, Vacarisses, cocina tradicional catalana, gastronomía catalana, platos caseros" />
+  <meta name="keywords" content="Stellar Progress, digitalización, automatización, restaurantes, diseño web, reservas, RMS, POS, optimización, experiencia del cliente" />
 
   <!-- Robots -->
   <meta name="robots" content="index, follow" />
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://restaurantmasia.cat/" />
+  <link rel="canonical" href="https://stellarprogress.es/" />
 
   <!-- Open Graph / Facebook -->
-  <meta property="og:title" content="La Masia Vacarisses | Cocina Tradicional Catalana" />
-  <meta property="og:description" content="Visita La Masia en Vacarisses, un restaurante de cocina tradicional catalana con platos caseros y ambiente acogedor." />
-  <meta property="og:type" content="restaurant" />
-  <meta property="og:url" content="https://restaurantmasia.cat/" />
-  <meta property="og:image" content="https://restaurantmasia.cat/og-image.jpg" />
+  <meta property="og:title" content="Digitalización y Automatización para Comercios y Restaurantes | Stellar Progress Booking System" />
+  <meta property="og:description" content="Soluciones integrales para la transformación digital de restaurantes, con diseño web a medida, sistemas de reservas y gestión automatizada." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stellarprogress.es/" />
+  <!-- Se asume que subiste LOGO-STELLAR-PNG.png a /public/LOGO-STELLAR-PNG.png -->
+  <meta property="og:image" content="https://stellarprogress.es/LOGO-STELLAR-PNG.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="La Masia Vacarisses | Restaurante de Cocina Tradicional Catalana" />
-  <meta name="twitter:description" content="La Masia en Vacarisses: cocina tradicional catalana con platos caseros elaborados con ingredientes de la zona." />
-  <meta name="twitter:image" content="https://restaurantmasia.cat/og-image.jpg" />
+  <meta name="twitter:title" content="Digitalización y Automatización para Comercios y Restaurantes | Stellar Progress Booking System" />
+  <meta name="twitter:description" content="Soluciones integrales para la transformación digital de restaurantes, con diseño web a medida, sistemas de reservas y gestión automatizada." />
+  <!-- Igual que en Open Graph, ruta en la carpeta pública -->
+  <meta name="twitter:image" content="https://stellarprogress.es/LOGO-STELLAR-PNG.png" />
 
   <!-- Favicon / Icons -->
+  <!-- IMPORTANTE: Asegúrate de que estos archivos estén en /public, no en /src -->
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
@@ -56,24 +48,28 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Restaurant",
-      "name": "La Masia",
-      "description": "Restaurante de cocina tradicional catalana en Vacarisses, con platos caseros elaborados con ingredientes locales.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Vacarisses",
-        "addressRegion": "Barcelona",
-        "addressCountry": "ES"
-      },
-      "telephone": "+34 650 341 022",
-      "servesCuisine": "Cocina tradicional catalana",
-      "url": "https://restaurantmasia.cat/",
-      "image": "https://restaurantmasia.cat/og-image.jpg"
+      "@type": "Organization",
+      "name": "Stellar Progress",
+      "url": "https://stellarprogress.es/",
+      "logo": "https://stellarprogress.es/LOGO-STELLAR-PNG.png",
+      "description": "Soluciones integrales de digitalización, automatización y optimización para restaurantes.",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+34 650 341 022",
+          "contactType": "customer service"
+        }
+      ],
+      "sameAs": [
+        "https://www.facebook.com/stellarprogresscompany",
+        "https://www.instagram.com/stellarprogress"
+      ]
     }
   </script>
 
   <!-- Tailwind (o tu CSS) debe incluir la clase sr-only -->
   <style>
+    /* Versión minimalista de sr-only */
     .sr-only {
       position: absolute !important;
       width: 1px !important;
@@ -86,24 +82,26 @@
       border: 0 !important;
     }
   </style>
-
 </head>
 <body>
 <!-- Ocultamos el contenido SEO con sr-only -->
 <header class="sr-only">
-  <h1>La Masia Vacarisses</h1>
+  <h1>Stellar Progress</h1>
 </header>
 <main class="sr-only">
   <section>
-    <h2>Restaurante de Cocina Tradicional Catalana</h2>
+    <h2>Digitalización y Automatización para Comercios y Restaurantes</h2>
     <p>
-      Bienvenido a <strong>La Masia</strong> en Vacarisses. Disfruta de auténticos platos caseros de la cocina catalana, elaborados con ingredientes frescos y locales.
+      Bienvenido a <strong>Stellar Progress</strong>. Ofrecemos soluciones para tu restaurante o comercio:
+      diseño web a medida, sistemas de reservas eficientes y estrategias de automatización.
     </p>
   </section>
 </main>
 
 <!-- Punto de montaje principal para React u otro framework -->
 <div id="root"></div>
+
+<!-- Carga del script principal (React, Vite, etc.) -->
 <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
