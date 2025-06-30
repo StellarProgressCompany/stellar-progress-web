@@ -131,7 +131,7 @@ function MissionPhilosophy() {
                                             .getElementById('contact')
                                             ?.scrollIntoView({ behavior: 'smooth' });
                                     }}
-                                    className="mt-12 bg-[#b4ab9c] text-white py-2 text-xl font-medium px-4 hover:bg-[#3a393e] rounded-xl hover:bg-[#b4ab9c] transition-colors"
+                                    className="mt-12 bg-[#b4ab9c] text-white py-2 text-xl font-medium px-4 hover:bg-[#3a393e] rounded-xl transition-colors"
                                     aria-label={`Contáctanos sobre ${section.title}`}
                                 >
                                     Contáctanos
