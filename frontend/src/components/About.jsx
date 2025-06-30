@@ -18,7 +18,7 @@ function About() {
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    <h2 className="text-5xl font-medium uppercase mb-6 text-gray-200 border-b-4 inline-block pb-2">
+                    <h2 className="text-4xl md:text-4xl font-medium text-white pb-2">
                         Quiénes Somos
                     </h2>
                     <p className="text-lg leading-relaxed text-gray-300 my-6">

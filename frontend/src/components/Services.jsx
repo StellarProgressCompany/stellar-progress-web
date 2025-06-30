@@ -199,11 +199,11 @@ function Services() {
                 >
                     <h2
                         id="services-heading"
-                        className="text-3xl md:text-4xl font-medium text-white"
+                        className="text-4xl md:text-4xl font-medium text-white"
                     >
                         Digitalización y automatización sin complicaciones
                     </h2>
-                    <p className="mt-2 text-yellow-500">
+                    <p className="mt-2 text-yellow-400">
                         - Especializados en Industria & Restauración  -
                     </p>
                 </motion.div>
