@@ -27,7 +27,8 @@ class ContactFormSubmitted extends Mailable
     {
         return $this
             ->subject('New message from ' . $this->data['from_name'])
-            ->markdown('emails.contact')        // simple Markdown view
-            ->with(['data' => $this->data]);    // pass data to the view
+            ->markdown('emails.contact')        // HTML Markdown view
+            ->text('emails.contact_plain')      // plain-text fallback
+            ->with(['data' => $this->data]);    // pass data to the views
     }
 }
