@@ -4,7 +4,6 @@
 **Nombre:** {{ $data['from_name'] }}  
 **Email:** <{{ $data['email'] }}>
 
-{{-- only one panel, for the message body --}}
 @component('mail::panel')
 {{ $data['message'] }}
 @endcomponent
