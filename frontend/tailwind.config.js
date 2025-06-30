@@ -1,5 +1,4 @@
 // tailwind.config.js
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -7,7 +6,17 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        serif: ["Montserrat", "sans-serif"],
+      },
+    },
   },
-  plugins: [],
-};
+  plugins: [
+    function ({ addBase, theme }) {
+      addBase({
+        'html': { fontFamily: theme('fontFamily.serif') },
+      })
+    }
+  ],
+}

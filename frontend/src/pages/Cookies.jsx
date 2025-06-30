@@ -5,19 +5,19 @@ import Footer from "../components/Footer";
 
 export default function Cookies() {
     return (
-        <div className="bg-gray-900 text-gray-200 py-24 min-h-screen flex flex-col">
+        <div className="bg-stone-600 text-stone-200 pt-24 min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-grow py-16 px-6">
-                <div className="max-w-4xl mx-auto bg-gray-700 p-8 rounded-lg shadow-lg">
-                    <h1 className="text-3xl font-bold text-yellow-500 text-center mb-6">
+                <div className="max-w-4xl mx-auto bg-stone-700 p-8 rounded-lg shadow-lg">
+                    <h1 className="text-3xl font-bold text-[#b4ab9c] text-center mb-6">
                         Política de Cookies
                     </h1>
-                    <p className="text-sm text-gray-400 text-center mb-8">
+                    <p className="text-sm text-stone-400 text-center mb-8">
                         Última actualización: 09/02/2025
                     </p>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             1. ¿Qué son las cookies?
                         </h2>
                         <p>
@@ -28,7 +28,7 @@ export default function Cookies() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             2. ¿Qué tipos de cookies usamos?
                         </h2>
                         <p>
@@ -42,7 +42,7 @@ export default function Cookies() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             3. ¿Cómo puedes gestionar las cookies?
                         </h2>
                         <p>
@@ -55,7 +55,7 @@ export default function Cookies() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             4. ¿Cuánto tiempo almacenamos las cookies?
                         </h2>
                         <p>
@@ -68,7 +68,7 @@ export default function Cookies() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             5. Servicios de terceros y transferencia de datos
                         </h2>
                         <p>
@@ -81,13 +81,13 @@ export default function Cookies() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             6. Contacto
                         </h2>
                         <p>
                             Si tienes dudas sobre esta política, puedes contactarnos a través de:
                         </p>
-                        <p className="text-yellow-400">📧 	info@stellarprogress.es</p>
+                        <p className="text-[#b4ab9c]">📧 	info@stellarprogress.es</p>
                     </section>
                 </div>
             </main>

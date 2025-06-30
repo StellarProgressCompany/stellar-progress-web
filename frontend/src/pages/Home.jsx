@@ -71,7 +71,7 @@ function Home() {
                 </script>
             </Helmet>
 
-            <div className="relative bg-gray-900 text-white">
+            <div className="relative bg-[#323433] text-white">
                 <BackgroundAnimation />
                 <Navbar />
                 <main className="pt-16">

@@ -12,12 +12,12 @@ function Hero() {
         >
             <header className="text-center">
                 <motion.h1
-                    className="text-5xl md:text-7xl font-thin uppercase"
+                    className="text-5xl md:text-7xl font-mont font-thin uppercase"
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 1.9 }} // Espera 1.9 segundos para iniciar
                 >
-                    Su Éxito Es <span className="text-yellow-500">Nuestro Compromiso.</span>
+                    Su Éxito Es <span className="text-[#b4ab9c] font-extralight ">Nuestro Compromiso.</span>
                 </motion.h1>
             </header>
 
@@ -31,8 +31,8 @@ function Hero() {
                     role="img"
                     aria-hidden="true"
                 >
-                    <g fill="#111827">
-                        <rect fill="#1F2937" width="100%" height="100%" />
+                    <g fill="#323433">
+                        <rect fill="#6b6d72" width="100%" height="100%" />
                         <path
                             d="M500 80.7C358 68 0 4 0 4V0h1000v84.7c-216 23.3-358 8.6-500-4Z"
                             opacity=".3"

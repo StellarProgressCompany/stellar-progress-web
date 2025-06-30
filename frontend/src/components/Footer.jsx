@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
     return (
-        <footer id="contact" className="py-8 bg-gray-800 text-gray-300">
+        <footer id="contact" className="py-8 bg-stone-900 text-gray-300">
             <div className="container mx-auto px-6 text-center">
                 <motion.p
                     className="text-sm mb-4"
@@ -18,13 +18,13 @@ function Footer() {
 
                 {/* Enlaces legales */}
                 <div className="flex justify-center space-x-4 text-sm">
-                    <Link to="/aviso-legal" className="hover:text-yellow-500 transition-colors">
+                    <Link to="/aviso-legal" className="hover:text-[#b4ab9c] transition-colors">
                         Aviso Legal
                     </Link>
-                    <Link to="/politica-de-privacidad" className="hover:text-yellow-500 transition-colors">
+                    <Link to="/politica-de-privacidad" className="hover:text-[#b4ab9c] transition-colors">
                         Política de Privacidad
                     </Link>
-                    <Link to="/politica-de-cookies" className="hover:text-yellow-500 transition-colors">
+                    <Link to="/politica-de-cookies" className="hover:text-[#b4ab9c] transition-colors">
                         Política de Cookies
                     </Link>
                 </div>

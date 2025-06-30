@@ -80,7 +80,7 @@ export default function ContactPage() {
             id="contact"
             role="region"
             aria-labelledby="contact-heading"
-            className="min-h-screen flex items-center justify-center bg-gray-600 bg-cover bg-center py-24"
+            className="min-h-screen flex items-center justify-center bg-stone-600 bg-cover bg-center py-24"
             style={{ backgroundImage: `url(${backgroundImage})` }}
         >
       <span className="sr-only">
@@ -89,14 +89,14 @@ export default function ContactPage() {
 
             <motion.div
                 {...fadeIn}
-                className="bg-black bg-opacity-70 p-8 rounded-lg shadow-lg max-w-md w-full space-y-6"
+                className="bg-black bg-opacity-70 p-8 rounded-3xl shadow-lg max-w-md w-full space-y-6"
             >
                 <motion.h2
                     {...fadeIn}
                     id="contact-heading"
                     className="text-3xl font-semibold text-gray-100 text-center"
                 >
-                    Contáctanos
+                    Contacto
                 </motion.h2>
 
                 <motion.p {...fadeIn} className="text-gray-200 text-center">
@@ -117,7 +117,7 @@ export default function ContactPage() {
                         onChange={handleChange}
                         placeholder="Nombre"
                         disabled={loading}
-                        className="w-full p-3 bg-gray-700 text-gray-200 rounded border border-gray-700 focus:ring-2 focus:ring-white outline-none disabled:opacity-50"
+                        className="w-full p-3 bg-[#6b6d72] text-gray-200 rounded-3xl border border-[#6b6d72] focus:ring-2 focus:ring-white outline-none disabled:opacity-50"
                     />
 
                     <motion.input
@@ -128,7 +128,7 @@ export default function ContactPage() {
                         onChange={handleChange}
                         placeholder="Correo Electrónico"
                         disabled={loading}
-                        className="w-full p-3 bg-gray-700 text-gray-200 rounded border border-gray-700 focus:ring-2 focus:ring-white outline-none disabled:opacity-50"
+                        className="w-full p-3 bg-[#6b6d72] text-gray-200 rounded-3xl border border-[#6b6d72] focus:ring-2 focus:ring-white outline-none disabled:opacity-50"
                     />
 
                     <motion.textarea
@@ -139,7 +139,7 @@ export default function ContactPage() {
                         placeholder="Mensaje"
                         rows="4"
                         disabled={loading}
-                        className="w-full p-3 bg-gray-700 text-gray-200 rounded border border-gray-700 focus:ring-2 focus:ring-white outline-none disabled:opacity-50"
+                        className="w-full p-3 bg-[#6b6d72] text-gray-200 rounded-3xl border border-[#6b6d72] focus:ring-2 focus:ring-white outline-none disabled:opacity-50"
                     />
 
                     <motion.label
@@ -158,7 +158,7 @@ export default function ContactPage() {
               Acepto la{' '}
                             <Link
                                 to="/politica-de-privacidad"
-                                className="text-yellow-400 underline"
+                                className="text-[#b4ab9c] underline"
                             >
                 Política de Privacidad
               </Link>
@@ -169,7 +169,7 @@ export default function ContactPage() {
                         {...fadeIn}
                         type="submit"
                         disabled={loading}
-                        className="w-full flex items-center justify-center space-x-2 py-3 bg-yellow-500 text-gray-900 font-semibold uppercase rounded hover:bg-yellow-600 transition disabled:opacity-50"
+                        className="w-full flex items-center justify-center space-x-2 py-3 bg-[#b4ab9c] text-gray-900 font-semibold uppercase rounded-3xl hover:bg-[#dcd7c9] transition disabled:opacity-50"
                     >
                         {loading ? (
                             <>
@@ -185,7 +185,7 @@ export default function ContactPage() {
                 {status.message && (
                     <motion.p
                         {...fadeIn}
-                        className={`mt-4 text-center text-sm inline-block px-4 py-2 rounded-md ${
+                        className={`mt-4 text-center text-sm inline-block px-4 py-2 rounded-3xl ${
                             status.type === 'success'
                                 ? 'bg-green-100 text-green-800'
                                 : 'bg-red-100 text-red-800'

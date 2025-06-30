@@ -5,19 +5,19 @@ import Footer from "../components/Footer";
 
 export default function AvisoLegal() {
     return (
-        <div className="bg-gray-900 text-gray-200 py-24 min-h-screen flex flex-col">
+        <div className="bg-stone-600 text-stone-200 pt-24 min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-grow py-16 px-6">
-                <div className="max-w-4xl mx-auto bg-gray-700 p-8 rounded-lg shadow-lg">
-                    <h1 className="text-3xl font-bold text-yellow-500 text-center mb-6">
+                <div className="max-w-4xl mx-auto bg-stone-700 p-8 rounded-lg shadow-lg">
+                    <h1 className="text-3xl font-bold text-[#b4ab9c] text-center mb-6">
                         Aviso Legal
                     </h1>
-                    <p className="text-sm text-gray-400 text-center mb-8">
+                    <p className="text-sm text-stone-400 text-center mb-8">
                         Última actualización: 09/02/2025
                     </p>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             1. Información General
                         </h2>
                         <p><strong>Titular:</strong> Sergi Calls</p>
@@ -28,7 +28,7 @@ export default function AvisoLegal() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             2. Condiciones de Uso
                         </h2>
                         <p>
@@ -40,7 +40,7 @@ export default function AvisoLegal() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             3. Propiedad Intelectual y Derechos de Autor
                         </h2>
                         <p>
@@ -52,7 +52,7 @@ export default function AvisoLegal() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             4. Exclusión de Responsabilidad
                         </h2>
                         <p>
@@ -64,7 +64,7 @@ export default function AvisoLegal() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             5. Enlaces a Terceros
                         </h2>
                         <p>
@@ -73,25 +73,25 @@ export default function AvisoLegal() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             6. Política de Privacidad y Protección de Datos
                         </h2>
                         <p>
-                            No se recopilan datos personales sin consentimiento. Si en el futuro se habilitan formularios de contacto, los datos serán tratados conforme a la <a href="/politica-de-privacidad" className="text-yellow-400 hover:underline">Política de Privacidad</a>.
+                            No se recopilan datos personales sin consentimiento. Si en el futuro se habilitan formularios de contacto, los datos serán tratados conforme a la <a href="/politica-de-privacidad" className="text-[#b4ab9c] hover:underline">Política de Privacidad</a>.
                         </p>
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             7. Uso de Cookies
                         </h2>
                         <p>
-                            Este sitio web puede utilizar cookies. Para más información, consulta nuestra <a href="/politica-de-cookies" className="text-yellow-400 hover:underline">Política de Cookies</a>.
+                            Este sitio web puede utilizar cookies. Para más información, consulta nuestra <a href="/politica-de-cookies" className="text-[#b4ab9c] hover:underline">Política de Cookies</a>.
                         </p>
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             8. Legislación Aplicable y Jurisdicción
                         </h2>
                         <p>
@@ -100,11 +100,11 @@ export default function AvisoLegal() {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-300 mb-4">
+                        <h2 className="text-2xl font-semibold text-stone-300 mb-4">
                             9. Contacto
                         </h2>
                         <p>Si tienes dudas sobre este Aviso Legal, puedes contactarnos en:</p>
-                        <p className="text-yellow-400">📧 stellarprogresscompany@gmail.com</p>
+                        <p className="text-[#b4ab9c]">📧 info@stellarprogress.es</p>
                     </section>
                 </div>
             </main>

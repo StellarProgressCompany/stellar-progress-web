@@ -8,7 +8,7 @@ import laptop from '../assets/Laptop.jpg';
 const sections = [
     {
         id: 1,
-        title: 'Nuestro Reto 🎯',
+        title: 'Nuestro Reto',
         image: businessDiscussion,
         text: (
             <>
@@ -31,7 +31,7 @@ const sections = [
     },
     {
         id: 2,
-        title: 'Nuestra Filosofía 🌟',
+        title: 'Nuestra Filosofía',
         image: handshake,
         text: (
             <>
@@ -54,22 +54,22 @@ const sections = [
     },
     {
         id: 3,
-        title: 'Nuestras Herramientas 🚀',
+        title: 'Nuestras Herramientas',
         image: laptop,
         text: (
             <>
                 Para crear sitios web <strong>rápidos, modernos y de alta calidad</strong>, utilizamos las
                 mejores tecnologías del mercado.
                 <br /><br />
-                🛠️ <strong>React y Laravel</strong> nos permiten construir plataformas{' '}
+                <strong>React y Laravel</strong> nos permiten construir plataformas{' '}
                 <strong>eficientes y escalables</strong>.
                 <br /><br />
-                🎨 <strong>TailwindCSS</strong> aporta un diseño <strong>ágil, atractivo y optimizado</strong>.
+                <strong>TailwindCSS</strong> aporta un diseño <strong>ágil, atractivo y optimizado</strong>.
                 <br /><br />
-                💻 <strong>PHPStorm</strong> nos ofrece un entorno de desarrollo{' '}
+                <strong>PHPStorm</strong> nos ofrece un entorno de desarrollo{' '}
                 <strong>rápido y potente</strong>.
                 <br /><br />
-                🌍 <strong>Servidores VPS profesionales</strong> garantizan{' '}
+                <strong>Servidores VPS profesionales</strong> garantizan{' '}
                 <strong>velocidad, estabilidad y seguridad en nuestras páginas web</strong>.
                 <br /><br />
                 Combinamos todas estas herramientas para ofrecer{' '}
@@ -84,26 +84,24 @@ function MissionPhilosophy() {
     return (
         <section
             id="mission-philosophy"
-            className="py-32 bg-gray-700"
+            className="py-24 bg-[#b4ab9c]"
             role="region"
             aria-labelledby="mission-philosophy-heading"
         >
             <div className="container mx-auto px-6 mb-12">
                 <h2
                     id="mission-philosophy-heading"
-                    className="text-4xl md:text-5xl font-bold text-white text-center"
+                    className="text-4xl md:text-5xl font-medium text-[#b4ab9c] text-center"
                 >
-                    Misión y Filosofía de Stellar Progress
+                    Nuestros Valores
                 </h2>
             </div>
-            <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="container mx-auto px-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {sections.map((section) => (
                         <motion.article
                             key={section.id}
-                            className="bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col"
-                            whileHover={{ scale: 1.03 }}
-                            transition={{ duration: 0.3 }}
+                            className="group bg-[#3a393e] rounded-3xl overflow-hidden shadow-lg flex flex-col transition-colors duration-300 hover:bg-white"
                             aria-labelledby={`mp-title-${section.id}`}
                         >
                             <picture>
@@ -120,11 +118,11 @@ function MissionPhilosophy() {
                             <div className="p-6 flex flex-col flex-grow">
                                 <h3
                                     id={`mp-title-${section.id}`}
-                                    className="text-2xl font-bold mb-4 text-gray-200"
+                                    className="text-2xl font-medium mb-4 text-gray-200 group-hover:text-stone-900 transition-colors duration-300"
                                 >
                                     {section.title}
                                 </h3>
-                                <div className="flex-grow mb-4 text-gray-200">
+                                <div className="flex-grow mb-4 text-gray-200 group-hover:text-stone-900 transition-colors duration-300">
                                     {section.text}
                                 </div>
                                 <button
@@ -133,7 +131,7 @@ function MissionPhilosophy() {
                                             .getElementById('contact')
                                             ?.scrollIntoView({ behavior: 'smooth' });
                                     }}
-                                    className="mt-auto bg-yellow-500 text-white py-2 text-xl font-bold px-4 rounded hover:bg-yellow-600 transition-colors"
+                                    className="mt-12 bg-[#b4ab9c] text-white py-2 text-xl font-medium px-4 hover:bg-[#3a393e] rounded-xl hover:bg-[#b4ab9c] transition-colors"
                                     aria-label={`Contáctanos sobre ${section.title}`}
                                 >
                                     Contáctanos

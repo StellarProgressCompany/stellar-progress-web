@@ -8,7 +8,7 @@ function About() {
     return (
         <section
             id="about"
-            className="relative overflow-visible py-20 text-gray-200 bg-pattern-dots bg-gray-900"
+            className="relative overflow-visible py-20 text-gray-200 bg-pattern-dots bg-[#323433]"
         >
             {/* Primera sección: Logo a la derecha, texto a la izquierda */}
             <div className="container mx-auto px-6 flex flex-col md:flex-row items-center mb-16 gap-10">
@@ -18,18 +18,18 @@ function About() {
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    <h2 className="text-5xl font-extrabold uppercase mb-6 text-gray-200 border-b-4 inline-block pb-2">
+                    <h2 className="text-5xl font-medium uppercase mb-6 text-gray-200 border-b-4 inline-block pb-2">
                         Quiénes Somos
                     </h2>
                     <p className="text-lg leading-relaxed text-gray-300 my-6">
                         En <strong className="text-white">Stellar Progress</strong>, creemos en el poder de la
                         digitalización para transformar negocios y hacerlos más competitivos en un mundo cada
-                        vez más tecnológico. Somos <strong className="text-yellow-400">Sergi y Oriol</strong>,
+                        vez más tecnológico. Somos <strong className="text-[#b4ab9c]">Sergi y Oriol</strong>,
                         dos jóvenes emprendedores con formación en{' '}
                         <strong className="text-white">Ingeniería Industrial</strong> e{' '}
                         <strong className="text-white">Ingeniería Informática</strong>, apasionados por la
                         tecnología y su impacto en la sociedad. Nuestra misión es clara:{' '}
-                        <strong className="text-yellow-400">
+                        <strong className="text-[#b4ab9c]">
                             ayudar a pequeños comercios y negocios de restauración a dar el salto digital
                         </strong>
                         , compitiendo de igual a igual con las grandes cadenas.
@@ -60,7 +60,7 @@ function About() {
                 >
                     <p className="text-lg leading-relaxed text-gray-300">
                         <strong className="text-white">Stellar Progress</strong> nació en el entorno de la{' '}
-                        <strong className="text-yellow-400">Universitat Politècnica de Catalunya (UPC)</strong>,
+                        <strong className="text-[#b4ab9c]">Universitat Politècnica de Catalunya (UPC)</strong>,
                         donde dimos forma a nuestra idea y la convertimos en un proyecto real. La formación
                         técnica y el acceso a herramientas avanzadas nos permitieron desarrollar una solución
                         adaptada a las necesidades de los pequeños negocios, combinando innovación y facilidad
@@ -72,7 +72,7 @@ function About() {
                         crecimiento de manera sostenible y accesible. Creemos en la tecnología como un medio
                         para fortalecer el tejido comercial local, creando un equilibrio entre la tradición y la
                         innovación.{' '}
-                        <strong className="text-yellow-400">
+                        <strong className="text-[#b4ab9c]">
                             Nuestro compromiso es acompañar a cada negocio en su proceso de digitalización, con
                             soluciones efectivas, cercanas y pensadas para su éxito a largo plazo.
                         </strong>
@@ -98,10 +98,10 @@ function About() {
                     className="w-full h-[100px] block"
                 >
                     {/* Fondo gris-900 para cubrir toda el área SVG */}
-                    <rect fill="#111827" width="100%" height="100%" />
+                    <rect fill="#323433" width="100%" height="100%" />
                     {/* Curva en gris-700 */}
                     <path
-                        fill="#374151"
+                        fill="#b4ab9c"
                         d="M0 0v36L250 4l750 96V0H0z"
                     />
                 </svg>
